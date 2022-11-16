@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: ksa_ekyc_register
+  profiles:
+    active: local
+  cloud:
+    config:
+      enabled: false
+      uri: https://configdev.kss.com.vn
+      #label : develop
+      request-read-timeout: 10000
+      username: admin
+      password: admin@123
+logs:
+  path: /var/log/${spring.application.name}

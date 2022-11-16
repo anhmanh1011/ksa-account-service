@@ -1,0 +1,64 @@
+server:
+  port: 8999
+spring:
+  servlet:
+    multipart:
+      max-file-size: 6MB
+      max-request-size: 10MB
+  application:
+    name: ksa_ekyc_register
+  jackson:
+    default-property-inclusion: NON_NULL
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+      WRITE_DATES_AS_TIMESTAMPS: false
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@10.101.0.201:1521:KSADBUAT
+    username: ksadev
+    password: ksadev
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 10
+      connectionTimeout: 30000 #30s
+      idleTimeout: 600000 #10 minutes
+      maxLifetime: 1800000 #30 minutes
+  main:
+    allow-circular-references: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  jpa:
+    show-sql: true
+  minio:
+    url: https://static-uat.kss.com.vn
+    access-key: uat-user-document
+    secret-key: F3wwxLQ6qZQAQfYVfg3D3xNVtS9H04Fj
+    bucket: uat-user-document
+logging:
+  level:
+    root: info
+
+ekyc:
+  vvn:
+    key: 7c8ba773-64cd-4ba5-a9bd-f035f06d0149
+    recognition: http://10.101.0.30:8091/ocr/recognition
+    faceVerification: http://10.101.0.30:8094/faceid/verification
+redis:
+  host: 10.199.100.9
+  port: 6379
+  database: 3
+  timeout: 60
+  password: yqlhFMwPb1Wm50es
+
+
+ksa:
+  user-default: KSA00000
+  mail:
+    url: http://10.199.18.5:8080/mail
+  template:
+    email:
+      change-pin: change_pin.html
+  sms:
+    url: http://10.199.18.5:10002
+    templateOTP: otp-bond-order
