@@ -17,7 +17,7 @@
         <Property name="kafka.topic.app">log.app</Property>
 
 <!--        <Property  name="app.name" >base_project</Property>-->
-        <property name="app.name">ksa_ekyc_register</property>
+        <property name="app.name">ksa_account_service</property>
 
     </Properties>
 
@@ -121,10 +121,12 @@
             <AppenderRef ref="stdout"/>
             <!--            <AppenderRef ref="RollingFile"/>-->
         </Root>
-
+        <Logger  name="org.springframework.web.servlet.mvc" level="info" includeLocation="true">
+            <AppenderRef ref="fail-over-kafkaAuditAppender"/>
+        </Logger>
         <Logger  name="com.kss.autoconfigure" level="trace" includeLocation="true">
             <AppenderRef ref="fail-over-kafkaAuditAppender"/>
-        </Logger >
+        </Logger>
     </Loggers>
 
 </Configuration>

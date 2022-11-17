@@ -30,7 +30,7 @@ public class KeycloakAuthenticationProvider implements AuthenticationProvider {
         if (roles != null) {
             grantedAuthorities.addAll(
                     roles.stream().map(
-                            role -> new KeycloakRole(role)
+                            KeycloakRole::new
                     ).collect(Collectors.toList())
             );
         }
@@ -44,7 +44,7 @@ public class KeycloakAuthenticationProvider implements AuthenticationProvider {
                                     role -> access.getKey() + "/" + role
                             )
                     ).map(
-                            role -> new KeycloakRole(role)
+                            KeycloakRole::new
                     ).collect(Collectors.toList())
             );
         }

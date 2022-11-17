@@ -1,4 +1,4 @@
-package com.kss.springbootkeycloak.config;
+package com.ksa.accountservice.config;
 
 import lombok.extern.log4j.Log4j2;
 import org.hibernate.resource.jdbc.spi.StatementInspector;

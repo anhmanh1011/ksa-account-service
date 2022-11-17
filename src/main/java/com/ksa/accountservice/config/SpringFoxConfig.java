@@ -1,12 +1,14 @@
-package com.kss.springbootkeycloak.config;
+package com.ksa.accountservice.config;
 
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -25,9 +27,8 @@ import java.util.stream.Collectors;
 @Configuration
 @EnableWebMvc
 @EnableSwagger2
-public class SpringFoxConfig {
+public class SpringFoxConfig extends WebMvcConfigurerAdapter {
 
-    public static final String AUTHORIZATION_HEADER = "Authorization: Bearer [token]";
 
     @Bean
     public Docket api() {
@@ -38,7 +39,7 @@ public class SpringFoxConfig {
 
         Docket docket = new Docket(DocumentationType.OAS_30).forCodeGeneration(true)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.kss.springbootkeycloak.controller"))
+                .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo())
@@ -46,6 +47,18 @@ public class SpringFoxConfig {
                 .securityContexts(Collections.singletonList(securityContext()));
 
         return docket;
+    }
+
+    private ApiInfo apiInfo() {
+
+
+        return new ApiInfo(
+                "KSA-ACCOUNT-SERVICE",
+                "",
+                "0.0.1",
+                "",
+                new Contact("manh.dd", "", "manh.dd@kss.com.vn"),
+                "KSA", null, Collections.emptyList());
     }
 
     private SecurityContext securityContext() {
@@ -62,15 +75,6 @@ public class SpringFoxConfig {
         return List.of(new SecurityReference("jwtTOKEN", authorizationScopes));
     }
 
-    private ApiInfo apiInfo() {
-        return new ApiInfo(
-                "User management service",
-                "provider any api for account",
-                "1.0",
-                "https://git.kss.com.vn/projects/ACC/repos/spring-boot-keycloak/browse",
-                new Contact("DAO DUC MANH", "https://git.kss.com.vn/projects/ACC/repos/spring-boot-keycloak/browse", "manh.dd@kss.com.vn"),
-                "1.0", null, Collections.emptyList());
-    }
 
     @Bean
     public static BeanPostProcessor springfoxHandlerProviderBeanPostProcessor() {
@@ -104,4 +108,15 @@ public class SpringFoxConfig {
             }
         };
     }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/swagger-ui.html");
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+        super.addResourceHandlers(registry);
+    }
+
+
 }
